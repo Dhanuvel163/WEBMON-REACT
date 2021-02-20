@@ -1,9 +1,9 @@
 import React from 'react'
-import Signin from '../Components/Signin'
-export default function Home() {
+import Home from '../Components/Home'
+export default function Homepage() {
     return (
         <div>
-            <Signin/>
+            <Home/>
         </div>
     )
 }
