@@ -1,7 +1,7 @@
 import * as  actionTypes from './actionTypes';
 import {baseUrl} from './url';
 import {isloggedin,getuser} from '../service/userservice';
-
+import {useToast} from '@chakra-ui/react'
 function fetchFunc(url,option,dispatch){
     dispatch(load())
     return new Promise((resolve,reject)=>{
@@ -35,17 +35,11 @@ function fetchFunc(url,option,dispatch){
 
 //User Signup and login
 
-export const postusersignup=(name,email,password,mobile,history)=>(dispatch)=>{
-    var newuser={
-            name:name,
-            email:email,
-            password:password,
-            mobile:mobile
-    }
-    newuser.date = new Date().toISOString();
+export const postusersignup=(values,toast)=>(dispatch)=>{
+    values.date = new Date().toISOString();
     return fetchFunc(baseUrl+'api/useraccounts/signup',{
         method: "POST",
-        body:JSON.stringify(newuser),
+        body:JSON.stringify(values),
         headers: {
           "Content-Type": "application/json"
         },
@@ -54,29 +48,39 @@ export const postusersignup=(name,email,password,mobile,history)=>(dispatch)=>{
     .then(Response=>{
         if(Response.success){
             localStorage.setItem('token',Response.token)
-            localStorage.setItem('islawyer',false)
             localStorage.setItem('name',Response.name)
-            // dispatch(fetchprofiledata())
+            dispatch(fetchprofiledata())
+            dispatch(fetchuserdata())
+            toast({
+            title: "Signed up successful.",
+            description: "We've created your account for you.",
+            status: "success",
+            duration: 9000,
+            isClosable: true,
+            position:'top-right'
+            })
+
             // dispatch(fetchallcases())
             // dispatch(fetchusercases())
-            // dispatch(fetchuserdata())
-            history.push("/home");
-            // displaySuccess(dispatch,'You are logged in as User')
+            // history.push("/home");
+        }else{
+            toast({
+            title: Response.message,status: "error", duration: 9000, isClosable: true,position:'top-right'
+            })
         }
     })
-    // .catch((error)=>{
-    //     displayError(dispatch,error)
-    // }).finally(()=>{dispatch(clearLoading())})
+    .catch((error)=>{
+        toast({
+        title: error,status: "error",duration: 9000,isClosable: true,position:'top-right'
+        })
+    })
+    // .finally(()=>{dispatch(clearLoading())})
 }
 
-export const postusersignin=(email,password,history)=>(dispatch)=>{
-    var newuser={
-            email:email,
-            password:password,
-    }
+export const postusersignin=(values,toast)=>(dispatch)=>{
     return fetchFunc(baseUrl+'api/useraccounts/login',{
         method: "POST",
-        body:JSON.stringify(newuser),
+        body:JSON.stringify(values),
         headers: {
           "Content-Type": "application/json"
         },
@@ -85,19 +89,24 @@ export const postusersignin=(email,password,history)=>(dispatch)=>{
     .then(Response=>{
         if(Response.success){
             localStorage.setItem('token',Response.token)
-            localStorage.setItem('islawyer',false)
             localStorage.setItem('name',Response.name)
-            // dispatch(fetchprofiledata())
+            dispatch(fetchprofiledata())
+            dispatch(fetchuserdata())
             // dispatch(fetchallcases())
             // dispatch(fetchusercases())
-            // dispatch(fetchuserdata())
-            history.push("/home");
-            // displaySuccess(dispatch,'You are logged in as User')
+            // history.push("/home");
+        }else{
+            toast({
+            title: Response.message,status: "error", duration: 9000, isClosable: true,position:'top-right'
+            })
         }
     })
-    // .catch((error)=>{
-    //     displayError(dispatch,error)
-    // }).finally(()=>{dispatch(clearLoading())})
+    .catch((error)=>{
+        toast({
+        title: error,status: "error",duration: 9000,isClosable: true,position:'top-right'
+        })
+    })
+    // .finally(()=>{dispatch(clearLoading())})
 }
 
 //Maintaining user logged in
@@ -168,7 +177,7 @@ export const addprofileloading=()=>({
 
 export const postprofiledata=(name,mobile,country,city,addr1,state,postalCode)=>(dispatch)=>{
     dispatch(addprofileloading(true))
-    if(isuserloggedin()){
+    if(isloggedin()){
         return fetch(baseUrl+'api/useraccounts/profile',{
             method: "POST",
             body:JSON.stringify({name,mobile,country,city,addr1,state,postalCode}),

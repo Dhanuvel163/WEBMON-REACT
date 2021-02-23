@@ -1,4 +1,4 @@
-import {isloggedin,islawyerloggedin,isuserloggedin,getuser,getlawyer} from '../../service/userservice';
+import {isloggedin,getuser} from '../../service/userservice';
 import * as  actionTypes from '../actionTypes';
 
 let USERS={};

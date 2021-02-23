@@ -1,11 +1,22 @@
 import {
-  Box,Flex,Text,IconButton,Button,Stack,Collapse,Icon,Link,Popover,PopoverTrigger,PopoverContent,
-  useColorModeValue,useBreakpointValue,useDisclosure,Image
+  Box,Flex,Text,IconButton,Stack,Collapse,Icon,Link,Popover,PopoverTrigger,PopoverContent,
+  useColorModeValue,useBreakpointValue,useDisclosure,Image,Button
 } from '@chakra-ui/react';
 import {HamburgerIcon,CloseIcon,ChevronDownIcon,ChevronRightIcon} from '@chakra-ui/icons';
 import { ColorModeSwitcher } from './ColorModeSwitcher';
+import {withRouter} from 'react-router-dom';
+import {connect} from 'react-redux';
+import {fetchuserdata} from '../shared/actionCreators'
 
-export default function WithSubnavigation() {
+const mapStateToProps=state=>{
+    return {
+        users:state.users
+    }
+}
+const mapDispatchToProps=dispatch=>({
+    fetchuserdata:()=>dispatch(fetchuserdata()),
+})
+function WithSubnavigation(props) {
   const { isOpen, onToggle } = useDisclosure();
 
   return (
@@ -37,14 +48,20 @@ export default function WithSubnavigation() {
         </Flex>
 
         <Stack flex={{ base: 1, md: 0 }} justify={'flex-end'} direction={'row'} spacing={6}>
-          {/* <Button as={'a'} fontSize={'sm'} fontWeight={400} variant={'link'} href={'#'}>
-            Sign In
-          </Button>
-          <Button
-            display={{ base: 'none', md: 'inline-flex' }} fontSize={'sm'} fontWeight={600} color={'white'} bg={'pink.400'}
-            href={'#'} _hover={{ bg: 'pink.300' }}>
-            Sign Up
-          </Button> */}
+          {
+            props.users.isloggedin &&
+            <Button onClick={
+              ()=>{
+                localStorage.removeItem('token')
+                props.fetchuserdata()
+              }
+            }
+              display={{ base: 'none', md: 'inline-flex' }} fontSize={'sm'} fontWeight={600} color={'white'} bg={'pink.400'}
+              href={'#'} _hover={{ bg: 'pink.300' }}>
+              Logout
+            </Button>
+          }
+
 
           <ColorModeSwitcher justifySelf="flex-end" />
         </Stack>
@@ -182,3 +199,5 @@ const NAV_ITEMS= [
     href: '#',
   }
 ];
+
+export default withRouter(connect(mapStateToProps,mapDispatchToProps)(WithSubnavigation));

@@ -1,6 +1,7 @@
 import React from 'react';
 import {ChakraProvider,theme,Box} from '@chakra-ui/react';
 import Header from './Components/Header'
+import Dashboard from './Pages/Dashboard'
 import Homepage from './Pages/Home'
 import {Provider} from 'react-redux';
 import {configStore} from '../src/shared/store';
@@ -16,8 +17,9 @@ function App() {
           <Header/>
           <Box height="16"/>
             <Switch>
+                <Route path='/dashboard' component={()=><Dashboard/>}></Route>
                 <Route path='/' component={()=><Homepage/>}></Route>
-                <Redirect to="/"></Redirect>
+                {/* <Redirect to="/"></Redirect> */}
             </Switch>
         </ChakraProvider>
       </BrowserRouter>
