@@ -28,11 +28,25 @@ function WithSubnavigation(props) {
         boxShadow={'md'}
         >
         <Flex flex={{ base: 1, md: 'auto' }} ml={{ base: -2 }} display={{ base: 'flex', md: 'none' }}>
-          <IconButton
+          {/* <IconButton
             onClick={onToggle}
             icon={isOpen ? <CloseIcon w={3} h={3} /> : <HamburgerIcon w={5} h={5} />}
             variant={'ghost'} aria-label={'Toggle Navigation'}
-          />
+          /> */}
+          {
+            props.users.isloggedin &&
+            <Button onClick={
+              ()=>{
+                localStorage.removeItem('token')
+                props.fetchuserdata()
+                props.history.push('/')
+              }
+            }
+              display={'inline-flex'} fontSize={'sm'}  fontWeight={600} color={'white'} bg={'pink.400'}
+              href={'#'} _hover={{ bg: 'pink.300' }}>
+              Logout
+            </Button>
+          }
         </Flex>
         <Flex flex={{ base: 1 }} justify={{ base: 'center', md: 'start' }}>
           <Text
@@ -55,7 +69,7 @@ function WithSubnavigation(props) {
                 props.history.push('/')
               }
             }
-              display={{ base: 'none', md: 'inline-flex' }} fontSize={'sm'} fontWeight={600} color={'white'} bg={'pink.400'}
+              display={{base:'none',sm:'inline-flex'}} fontSize={'sm'}  fontWeight={600} color={'white'} bg={'pink.400'}
               href={'#'} _hover={{ bg: 'pink.300' }}>
               Logout
             </Button>
@@ -143,7 +157,7 @@ const MobileNavItem = ({ label, children, href }) => {
 
   return (
     <Stack spacing={4} onClick={children && onToggle}>
-      <Flex
+      {/* <Flex
         py={2} as={Link} href={href ?? '#'} justify={'space-between'} align={'center'} _hover={{ textDecoration: 'none', }}>
         <Text fontWeight={600} color={useColorModeValue('gray.600', 'gray.200')}>
           {label}
@@ -166,7 +180,7 @@ const MobileNavItem = ({ label, children, href }) => {
               </Link>
             ))}
         </Stack>
-      </Collapse>
+      </Collapse> */}
     </Stack>
   );
 };

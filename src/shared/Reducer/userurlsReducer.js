@@ -8,6 +8,8 @@ export const userurls=(state={userurls:[],isloading:true,err:null},action)=>{
             return {...state,userurls:[],isloading:false,err:action.payload}
         case actionTypes.ADD_USERURLDATA_LOADING:
             return {...state,userurls:[],isloading:true,err:null}
+        case actionTypes.CONCAT_USERURLDATA:
+            return {...state,userurls:state.userurls.concat(action.payload),isloading:false,err:null}
         default:
             return state;
     }

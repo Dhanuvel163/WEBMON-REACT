@@ -225,7 +225,7 @@ export const postaddurl = (values,toast)=>(dispatch)=>{
                 title: "Added your website successfully",
                 status: "success",duration: 9000,isClosable: true,position:'top-right'
             })
-            dispatch(fetchuserurlData())
+            dispatch(concatuserurlData(Response.url))
         }else{
             toast({
             title: Response.message,status: "error", duration: 9000, isClosable: true,position:'top-right'
@@ -285,6 +285,10 @@ export const userurlDatafailed=(err)=>({
 
 export const adduserurlData=(data)=>({
     type:actionTypes.ADD_USERURLDATA,
+    payload:data
+})
+export const concatuserurlData=(data)=>({
+    type:actionTypes.CONCAT_USERURLDATA,
     payload:data
 })
 

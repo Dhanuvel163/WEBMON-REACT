@@ -78,7 +78,7 @@ function Dashboard(props) {
                             draweronOpen()
                           }}
                           key={i} borderRadius="md" w="100%" bg="blue.500" _hover={{bg:"blue.400",color:"whiteAlpha.900"}} 
-                          padding="10px" boxShadow="dark-lg" cursor="pointer" color="whiteAlpha.800"> 
+                          padding="10px" boxShadow="lg" cursor="pointer" color="whiteAlpha.800"> 
                               <Box borderRadius="full" height="17px" width="17px" bg={d.up?"green":"red"} boxShadow="dark-lg"
                               border="2px"></Box>
                               <Text textAlign="center" textTransform="uppercase" fontWeight="bold">{d.name}</Text>
@@ -87,7 +87,7 @@ function Dashboard(props) {
                               </Text>
                           </Box>
                         ))
-                        }           
+                        }          
                       </Grid>
                       <Button onClick={onOpen} leftIcon={<AddIcon/>} mt="14" colorScheme={'blue'} variant={'solid'}>
                           Add a website for monitoring
@@ -206,6 +206,10 @@ function Dashboard(props) {
                                   )
                                 })
                               }
+                              {
+                                (selecteddata.logs.length  === 0) &&
+                                  <Code colorScheme={"green"} padding="5px" children={`No logs yet created !Refresh after some time`}/>
+                              } 
                             </Stack>
                             </Box>
                           </Box>
