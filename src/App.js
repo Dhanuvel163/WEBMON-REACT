@@ -3,29 +3,33 @@ import {ChakraProvider,theme,Box} from '@chakra-ui/react';
 import Header from './Components/Header'
 import Dashboard from './Pages/Dashboard'
 import Homepage from './Pages/Home'
-import {Provider} from 'react-redux';
-import {configStore} from '../src/shared/store';
-import {BrowserRouter} from 'react-router-dom';
 import {Switch,Route,Redirect,withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
-const store=configStore();
-function App() {
+const mapStateToProps=state=>{
+    return {
+        users:state.users
+    }
+}
+const mapDispatchToProps=dispatch=>({
+})
+function App(props) {
   return (
-    <Provider store={store}>
-      <BrowserRouter>
         <ChakraProvider theme={theme}>
           <Header/>
           <Box height="16"/>
             <Switch>
-                <Route path='/dashboard' component={()=><Dashboard/>}></Route>
-                <Route path='/' component={()=><Homepage/>}></Route>
-                {/* <Redirect to="/"></Redirect> */}
+                <Route path='/dashboard'
+                render={prop => {
+                  return props.users.isloggedin  ? <Dashboard/> : <Redirect to="/"/>
+                }}></Route>
+                <Route path='/' exact={true}
+                render={prop => {
+                  return props.users.isloggedin  ? <Redirect to="/dashboard"/> : <Homepage/>
+                }}></Route>
             </Switch>
         </ChakraProvider>
-      </BrowserRouter>
-    </Provider>
   );
 }
 
 
-export default App;
+export default withRouter(connect(mapStateToProps,mapDispatchToProps)(App));

@@ -2,7 +2,7 @@ import {createStore,combineReducers,applyMiddleware} from 'redux';
 
 import {users} from './Reducer/userReducer';
 import {profiledata} from './Reducer/profiledataReducer';
-import {usercases} from './Reducer/usercasesReducer';
+import {userurls} from './Reducer/userurlsReducer';
 import {errors} from './Reducer/errorReducer';
 import {loading} from './Reducer/loadingReducer';
 
@@ -13,7 +13,7 @@ export const configStore=()=>{
         combineReducers({
             users:users,
             profiledata:profiledata,
-            usercases,
+            userurls,
             errors,
             loading
         }),

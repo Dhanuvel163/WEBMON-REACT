@@ -15,8 +15,8 @@ const mapStateToProps=state=>{
     }
 }
 const mapDispatchToProps=dispatch=>({
-    postusersignin:(values,toast)=>dispatch(postusersignin(values,toast)),
-    postusersignup:(values,toast)=>dispatch(postusersignup(values,toast)),
+    postusersignin:(values,toast,history)=>dispatch(postusersignin(values,toast,history)),
+    postusersignup:(values,toast,history)=>dispatch(postusersignup(values,toast,history)),
 })
 
 function Signin(props) {
@@ -26,7 +26,7 @@ function Signin(props) {
         <Stack spacing={4} w={'full'} maxW={'md'}>
           <Heading fontSize={'2xl'}>Sign in to your account</Heading>
           <Divider/>
-
+          
             <Formik
             initialValues={{ email: '', password: ''}}
             validate={values => {
@@ -44,7 +44,7 @@ function Signin(props) {
                 return errors;
             }}
             onSubmit={(values, { setSubmitting }) => {
-                props.postusersignin(values,toast)
+                props.postusersignin(values,toast,props.history)
                 setSubmitting(false);
             }}
             >
@@ -86,7 +86,7 @@ function Signin(props) {
             </Formik>
 
                 <Formik
-                initialValues={{ email: '', password: '',username:'',mobile:'' }}
+                initialValues={{ email: '', password: '',name:'',mobile:'' }}
                 validate={values => {
                     const errors = {};
                     if (!values.email) {
@@ -96,10 +96,10 @@ function Signin(props) {
                     ) {
                     errors.email = 'Invalid email address';
                     }
-                    if (!values.username) {
-                    errors.username = 'Username is Required';
-                    } else if (values.username.length<6 || values.username.length>20) {
-                    errors.username = 'Username should have minimum 6 characters and maximum 20 characters';
+                    if (!values.name) {
+                    errors.name = 'Username is Required';
+                    } else if (values.name.length<6 || values.name.length>20) {
+                    errors.name = 'Username should have minimum 6 characters and maximum 20 characters';
                     }                                    
                     if (!values.password) {
                     errors.password = 'Password is Required';
@@ -114,7 +114,7 @@ function Signin(props) {
                     return errors;
                 }}
                 onSubmit={(values, { setSubmitting }) => {
-                    props.postusersignup(values,toast)
+                    props.postusersignup(values,toast,props.history)
                     setSubmitting(false);
                 }}
                 >
@@ -128,13 +128,13 @@ function Signin(props) {
                           <FormControl id="name">
                             <FormLabel>Username</FormLabel>
                             <Input type="text"
-                              name="username"
+                              name="name"
                               onChange={handleChange}
                               onBlur={handleBlur}
-                              value={values.username}
+                              value={values.name}
                             />
                           </FormControl>
-                          {errors.username && touched.username && <Formerror>{errors.username}</Formerror>}
+                          {errors.name && touched.name && <Formerror>{errors.name}</Formerror>}
                           <FormControl id="email">
                             <FormLabel>Email address</FormLabel>
                             <Input type="email"

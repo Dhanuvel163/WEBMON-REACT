@@ -1,7 +1,6 @@
 import * as  actionTypes from './actionTypes';
 import {baseUrl} from './url';
 import {isloggedin,getuser} from '../service/userservice';
-import {useToast} from '@chakra-ui/react'
 function fetchFunc(url,option,dispatch){
     dispatch(load())
     return new Promise((resolve,reject)=>{
@@ -35,7 +34,7 @@ function fetchFunc(url,option,dispatch){
 
 //User Signup and login
 
-export const postusersignup=(values,toast)=>(dispatch)=>{
+export const postusersignup=(values,toast,history)=>(dispatch)=>{
     values.date = new Date().toISOString();
     return fetchFunc(baseUrl+'api/useraccounts/signup',{
         method: "POST",
@@ -52,17 +51,13 @@ export const postusersignup=(values,toast)=>(dispatch)=>{
             dispatch(fetchprofiledata())
             dispatch(fetchuserdata())
             toast({
-            title: "Signed up successful.",
-            description: "We've created your account for you.",
-            status: "success",
-            duration: 9000,
-            isClosable: true,
-            position:'top-right'
+                title: "Signed up successful.",
+                description: "We've created your account for you.",
+                status: "success",duration: 9000,isClosable: true,position:'top-right'
             })
-
             // dispatch(fetchallcases())
             // dispatch(fetchusercases())
-            // history.push("/home");
+            history.push("/dashboard");
         }else{
             toast({
             title: Response.message,status: "error", duration: 9000, isClosable: true,position:'top-right'
@@ -77,7 +72,7 @@ export const postusersignup=(values,toast)=>(dispatch)=>{
     // .finally(()=>{dispatch(clearLoading())})
 }
 
-export const postusersignin=(values,toast)=>(dispatch)=>{
+export const postusersignin=(values,toast,history)=>(dispatch)=>{
     return fetchFunc(baseUrl+'api/useraccounts/login',{
         method: "POST",
         body:JSON.stringify(values),
@@ -94,7 +89,11 @@ export const postusersignin=(values,toast)=>(dispatch)=>{
             dispatch(fetchuserdata())
             // dispatch(fetchallcases())
             // dispatch(fetchusercases())
-            // history.push("/home");
+            toast({
+                title: "Signed in successful.",
+                status: "success",duration: 9000,isClosable: true,position:'top-right'
+            })
+            history.push("/dashboard");
         }else{
             toast({
             title: Response.message,status: "error", duration: 9000, isClosable: true,position:'top-right'
@@ -135,7 +134,6 @@ export const adduserdata=()=>{
     }
 }
 
-//Edit Profile
 
 export const fetchprofiledata=()=>(dispatch)=>{
     dispatch(addprofileloading(true))
@@ -174,50 +172,47 @@ export const addprofileloading=()=>({
 })
 
 //post edited profile data
-
-export const postprofiledata=(name,mobile,country,city,addr1,state,postalCode)=>(dispatch)=>{
-    dispatch(addprofileloading(true))
-    if(isloggedin()){
-        return fetch(baseUrl+'api/useraccounts/profile',{
-            method: "POST",
-            body:JSON.stringify({name,mobile,country,city,addr1,state,postalCode}),
-            credentials: "same-origin",
-            headers: {
-              "Content-Type": "application/json",
-              "authorization":localStorage.getItem('token')
-            },
-        })
-            .then((res)=>{
-                if(res.ok){
-                    return res;
-                }else{
-                    var error=new Error('Error'+res.status+res.statusText)
-                    error.res=res;
-                    throw error;
-                }
-            },
-            (error)=>{
-                throw new Error(error.message)
-            })
-            .then(res=> res.json())
-            .then(user=>{
-                displaySuccess(dispatch,'Edited Successfully!!')
-                dispatch(fetchprofiledata())})
-            .catch((error)=>{
-                displayError(dispatch,'Something went wrong:'+error.message)
-            })
-    }
-}
+//Edit Profile
+// export const postprofiledata=(name,mobile,country,city,addr1,state,postalCode)=>(dispatch)=>{
+//     dispatch(addprofileloading(true))
+//     if(isloggedin()){
+//         return fetch(baseUrl+'api/useraccounts/profile',{
+//             method: "POST",
+//             body:JSON.stringify({name,mobile,country,city,addr1,state,postalCode}),
+//             credentials: "same-origin",
+//             headers: {
+//               "Content-Type": "application/json",
+//               "authorization":localStorage.getItem('token')
+//             },
+//         })
+//             .then((res)=>{
+//                 if(res.ok){
+//                     return res;
+//                 }else{
+//                     var error=new Error('Error'+res.status+res.statusText)
+//                     error.res=res;
+//                     throw error;
+//                 }
+//             },
+//             (error)=>{
+//                 throw new Error(error.message)
+//             })
+//             .then(res=> res.json())
+//             .then(user=>{
+//                 displaySuccess(dispatch,'Edited Successfully!!')
+//                 dispatch(fetchprofiledata())})
+//             .catch((error)=>{
+//                 displayError(dispatch,'Something went wrong:'+error.message)
+//             })
+//     }
+// }
 
 //Add Website data
 
-export const postaddurl = (url,maxResponseTime)=>(dispatch)=>{
-    var newurl={
-        url,maxResponseTime
-    }
+export const postaddurl = (values,toast)=>(dispatch)=>{
     return fetchFunc(baseUrl+'api/useraccounts/url',{
         method: "POST",
-        body:JSON.stringify(newurl),
+        body:JSON.stringify(values),
         headers: {
             "Content-Type": "application/json",
             "authorization":localStorage.getItem('token')
@@ -226,16 +221,25 @@ export const postaddurl = (url,maxResponseTime)=>(dispatch)=>{
     },dispatch)
     .then(Response=>{
         if(Response.success){
-            // displaySuccess(dispatch,'Added case Successfully!')
-            // dispatch(fetchusercases())
+            toast({
+                title: "Added your website successfully",
+                status: "success",duration: 9000,isClosable: true,position:'top-right'
+            })
+            dispatch(fetchuserurlData())
+        }else{
+            toast({
+            title: Response.message,status: "error", duration: 9000, isClosable: true,position:'top-right'
+            })
         }
     })
-    // .catch((error)=>{
-    //     displayError(dispatch,error)
-    // }).finally(()=>{dispatch(clearLoading())})
+    .catch((error)=>{
+        toast({
+        title: error,status: "error",duration: 9000,isClosable: true,position:'top-right'
+        })
+    })
+    // .finally(()=>{dispatch(clearLoading())})
 }
 
-//Load user cases
 
 export const fetchuserurlData=()=>(dispatch)=>{
     dispatch(userurlDataloading(true));
@@ -284,22 +288,6 @@ export const adduserurlData=(data)=>({
     payload:data
 })
 
-//ERROR Message
-
-export const errorMessage=(msg)=>({
-   type:actionTypes.ERROR_MESSAGE ,
-   payload:msg
-})
-
-export const successMessage=(msg)=>({
-    type:actionTypes.SUCCESS_MESSAGE,
-    payload:msg
-})
-
-export const clearMessage=()=>({
-    type:actionTypes.CLEAR_MESSAGE,
-})
-
 //LOADING
 export const load=()=>({
    type:actionTypes.LOADING
@@ -308,16 +296,3 @@ export const load=()=>({
 export const clearLoading=()=>({
     type:actionTypes.CLEAR_LOADING,
 })
-
-function displaySuccess(dispatch,msg){
-    dispatch(successMessage(msg))
-    setTimeout(()=>{
-        dispatch(clearMessage())
-    },3000)
-}
-function displayError(dispatch,msg){
-    dispatch(errorMessage(msg))
-    setTimeout(()=>{
-        dispatch(clearMessage())
-    },3000)
-}

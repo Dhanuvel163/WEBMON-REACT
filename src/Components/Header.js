@@ -38,10 +38,8 @@ function WithSubnavigation(props) {
           <Text
             textAlign={useBreakpointValue({ base: 'center', md: 'left' })}
             fontFamily={'heading'} color={useColorModeValue('gray.800', 'white')}>
-                <Image src="/logo40.png" boxShadow="md" borderRadius="full"/>
-            {/* Logo */}
+                <Image src="/logo.webp" height="10" boxShadow="md" borderRadius="full"/>
           </Text>
-
           <Flex display={{ base: 'none', md: 'flex' }} ml={10}>
             <DesktopNav />
           </Flex>
@@ -54,6 +52,7 @@ function WithSubnavigation(props) {
               ()=>{
                 localStorage.removeItem('token')
                 props.fetchuserdata()
+                props.history.push('/')
               }
             }
               display={{ base: 'none', md: 'inline-flex' }} fontSize={'sm'} fontWeight={600} color={'white'} bg={'pink.400'}
@@ -61,8 +60,6 @@ function WithSubnavigation(props) {
               Logout
             </Button>
           }
-
-
           <ColorModeSwitcher justifySelf="flex-end" />
         </Stack>
       </Flex>
@@ -108,7 +105,6 @@ const DesktopNav = () => {
     </Stack>
   );
 };
-
 const DesktopSubNav = ({ label, href, subLabel }) => {
   return (
     <Link
@@ -132,7 +128,6 @@ const DesktopSubNav = ({ label, href, subLabel }) => {
     </Link>
   );
 };
-
 const MobileNav = () => {
   return (
     <Stack
@@ -143,7 +138,6 @@ const MobileNav = () => {
     </Stack>
   );
 };
-
 const MobileNavItem = ({ label, children, href }) => {
   const { isOpen, onToggle } = useDisclosure();
 
@@ -179,25 +173,25 @@ const MobileNavItem = ({ label, children, href }) => {
 
 
 const NAV_ITEMS= [
-  {
-    label: 'link1',
-    children: [
-      {
-        label: 'Explore Design Work',
-        subLabel: 'Trending Design to inspire you',
-        href: '#',
-      },
-      {
-        label: 'New & Noteworthy',
-        subLabel: 'Up-and-coming Designers',
-        href: '#',
-      },
-    ],
-  },
-  {
-    label: 'Learn 2',
-    href: '#',
-  }
+  // {
+  //   label: 'link1',
+  //   children: [
+  //     {
+  //       label: 'Explore Design Work',
+  //       subLabel: 'Trending Design to inspire you',
+  //       href: '#',
+  //     },
+  //     {
+  //       label: 'New & Noteworthy',
+  //       subLabel: 'Up-and-coming Designers',
+  //       href: '#',
+  //     },
+  //   ],
+  // },
+  // {
+  //   label: 'Learn 2',
+  //   href: '#',
+  // }
 ];
 
 export default withRouter(connect(mapStateToProps,mapDispatchToProps)(WithSubnavigation));
