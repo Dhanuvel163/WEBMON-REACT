@@ -239,7 +239,36 @@ export const postaddurl = (values,toast)=>(dispatch)=>{
     })
     // .finally(()=>{dispatch(clearLoading())})
 }
-
+export const postremoveurl = (values,toast)=>(dispatch)=>{
+    return fetchFunc(baseUrl+'api/useraccounts/url',{
+        method: "DELETE",
+        body:JSON.stringify(values),
+        headers: {
+            "Content-Type": "application/json",
+            "authorization":localStorage.getItem('token')
+          },
+        credentials: "same-origin"
+    },dispatch)
+    .then(Response=>{
+        if(Response.success){
+            toast({
+                title: "Removed your website successfully",
+                status: "success",duration: 9000,isClosable: true,position:'top-right'
+            })
+            dispatch(removeuserurlData(values.id))
+        }else{
+            toast({
+            title: Response.message,status: "error", duration: 9000, isClosable: true,position:'top-right'
+            })
+        }
+    })
+    .catch((error)=>{
+        toast({
+        title: error,status: "error",duration: 9000,isClosable: true,position:'top-right'
+        })
+    })
+    // .finally(()=>{dispatch(clearLoading())})
+}
 
 export const fetchuserurlData=()=>(dispatch)=>{
     dispatch(userurlDataloading(true));
@@ -291,7 +320,10 @@ export const concatuserurlData=(data)=>({
     type:actionTypes.CONCAT_USERURLDATA,
     payload:data
 })
-
+export const removeuserurlData=(data)=>({
+    type:actionTypes.REMOVE_USERURLDATA,
+    payload:data
+})
 //LOADING
 export const load=()=>({
    type:actionTypes.LOADING

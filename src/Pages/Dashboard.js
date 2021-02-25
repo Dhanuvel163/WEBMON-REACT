@@ -2,7 +2,7 @@ import React,{useEffect, useState} from 'react'
 import Profile from '../Components/Profile'
 import {withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
-import {fetchprofiledata,fetchuserurlData,postaddurl} from '../shared/actionCreators'
+import {fetchprofiledata,fetchuserurlData,postaddurl,postremoveurl} from '../shared/actionCreators'
 import {Flex,Box,Grid, useColorModeValue} from '@chakra-ui/react'
 import { Skeleton, SkeletonCircle, SkeletonText,Heading,Divider ,Button,Text,useToast} from "@chakra-ui/react"
 import { Icon,useDisclosure } from "@chakra-ui/react"
@@ -24,6 +24,7 @@ const mapDispatchToProps=dispatch=>({
     fetchprofiledata:()=>dispatch(fetchprofiledata()),
     fetchuserurlData:()=>dispatch(fetchuserurlData()),
     postaddurl:(values,toast)=>dispatch(postaddurl(values,toast)),
+    postremoveurl:(values,toast)=>dispatch(postremoveurl(values,toast))
 })
 
 let fetched = false
@@ -85,6 +86,11 @@ function Dashboard(props) {
                               <Text fontSize={'sm'} textAlign="center" fontWeight="bold" mt="10px">
                               {d.maxResponseTime} ms
                               </Text>
+                              <Button size="sm" colorScheme="red" mt="2px" 
+                              onClick={(e)=>{
+                                e.stopPropagation()
+                                props.postremoveurl({id:d._id},toast)
+                              }}>Remove</Button>
                           </Box>
                         ))
                         }          

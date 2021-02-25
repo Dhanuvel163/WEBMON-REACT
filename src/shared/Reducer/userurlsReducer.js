@@ -10,6 +10,8 @@ export const userurls=(state={userurls:[],isloading:true,err:null},action)=>{
             return {...state,userurls:[],isloading:true,err:null}
         case actionTypes.CONCAT_USERURLDATA:
             return {...state,userurls:state.userurls.concat(action.payload),isloading:false,err:null}
+        case actionTypes.REMOVE_USERURLDATA:
+            return {...state,userurls:state.userurls.filter((d)=>d._id!==action.payload),isloading:false,err:null}
         default:
             return state;
     }
