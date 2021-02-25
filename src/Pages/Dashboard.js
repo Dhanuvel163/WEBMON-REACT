@@ -54,7 +54,6 @@ function Dashboard(props) {
                     <SkeletonText mt="4" mb="4" noOfLines={4} spacing="4" />
                     <Skeleton isLoaded={!props.profiledata.isloading} height="200px" width="300px"></Skeleton>
                 </Box>
-
             </Box>
             :
             <div>
@@ -119,6 +118,7 @@ function Dashboard(props) {
                       onSubmit={(values, { setSubmitting }) => {
                           props.postaddurl(values,toast)
                           setSubmitting(false);
+                          onClose()
                       }}
                       >
                       {({values,errors,touched,handleChange,handleBlur,handleSubmit,isSubmitting}) => (

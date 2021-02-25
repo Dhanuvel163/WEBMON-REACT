@@ -35,6 +35,7 @@ function fetchFunc(url,option,dispatch){
 //User Signup and login
 
 export const postusersignup=(values,toast,history)=>(dispatch)=>{
+    load()
     values.date = new Date().toISOString();
     return fetchFunc(baseUrl+'api/useraccounts/signup',{
         method: "POST",
@@ -50,13 +51,12 @@ export const postusersignup=(values,toast,history)=>(dispatch)=>{
             localStorage.setItem('name',Response.name)
             dispatch(fetchprofiledata())
             dispatch(fetchuserdata())
+            dispatch(fetchuserurlData())
             toast({
                 title: "Signed up successful.",
                 description: "We've created your account for you.",
                 status: "success",duration: 9000,isClosable: true,position:'top-right'
             })
-            // dispatch(fetchallcases())
-            // dispatch(fetchusercases())
             history.push("/dashboard");
         }else{
             toast({
@@ -69,7 +69,7 @@ export const postusersignup=(values,toast,history)=>(dispatch)=>{
         title: error,status: "error",duration: 9000,isClosable: true,position:'top-right'
         })
     })
-    // .finally(()=>{dispatch(clearLoading())})
+    .finally(()=>{dispatch(clearLoading())})
 }
 
 export const postusersignin=(values,toast,history)=>(dispatch)=>{
@@ -87,8 +87,7 @@ export const postusersignin=(values,toast,history)=>(dispatch)=>{
             localStorage.setItem('name',Response.name)
             dispatch(fetchprofiledata())
             dispatch(fetchuserdata())
-            // dispatch(fetchallcases())
-            // dispatch(fetchusercases())
+            dispatch(fetchuserurlData())
             toast({
                 title: "Signed in successful.",
                 status: "success",duration: 9000,isClosable: true,position:'top-right'
@@ -105,7 +104,7 @@ export const postusersignin=(values,toast,history)=>(dispatch)=>{
         title: error,status: "error",duration: 9000,isClosable: true,position:'top-right'
         })
     })
-    // .finally(()=>{dispatch(clearLoading())})
+    .finally(()=>{dispatch(clearLoading())})
 }
 
 //Maintaining user logged in
@@ -210,6 +209,7 @@ export const addprofileloading=()=>({
 //Add Website data
 
 export const postaddurl = (values,toast)=>(dispatch)=>{
+    load()
     return fetchFunc(baseUrl+'api/useraccounts/url',{
         method: "POST",
         body:JSON.stringify(values),
@@ -237,9 +237,10 @@ export const postaddurl = (values,toast)=>(dispatch)=>{
         title: error,status: "error",duration: 9000,isClosable: true,position:'top-right'
         })
     })
-    // .finally(()=>{dispatch(clearLoading())})
+    .finally(()=>{dispatch(clearLoading())})
 }
 export const postremoveurl = (values,toast)=>(dispatch)=>{
+    load()
     return fetchFunc(baseUrl+'api/useraccounts/url',{
         method: "DELETE",
         body:JSON.stringify(values),
@@ -267,7 +268,7 @@ export const postremoveurl = (values,toast)=>(dispatch)=>{
         title: error,status: "error",duration: 9000,isClosable: true,position:'top-right'
         })
     })
-    // .finally(()=>{dispatch(clearLoading())})
+    .finally(()=>{dispatch(clearLoading())})
 }
 
 export const fetchuserurlData=()=>(dispatch)=>{

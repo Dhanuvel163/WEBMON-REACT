@@ -115,6 +115,7 @@ function Signin(props) {
                 }}
                 onSubmit={(values, { setSubmitting }) => {
                     props.postusersignup(values,toast,props.history)
+                    onClose()
                     setSubmitting(false);
                 }}
                 >
