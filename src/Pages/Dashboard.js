@@ -8,7 +8,7 @@ import { Skeleton, SkeletonCircle, SkeletonText,Heading,Divider ,Button,Text,use
 import { Icon,useDisclosure } from "@chakra-ui/react"
 import { ModalBody,Modal,ModalOverlay,ModalContent,ModalHeader,ModalCloseButton,FormControl,FormLabel,Input,
   ModalFooter,Drawer,DrawerOverlay,DrawerBody,DrawerCloseButton,DrawerContent,DrawerHeader,DrawerFooter } from "@chakra-ui/react"
-import {Stat,StatLabel,StatNumber,StatHelpText,Stack,Code} from "@chakra-ui/react"
+import {Stat,StatLabel,StatNumber,StatHelpText,Stack,Code,Alert,AlertIcon} from "@chakra-ui/react"
 import { MdLanguage } from "react-icons/md"
 import { AddIcon } from '@chakra-ui/icons'
 import { Formik } from 'formik';
@@ -47,6 +47,14 @@ function Dashboard(props) {
     return (
         <>
         {
+          (props.profiledata.err || props.userurls.err) ?
+          <Box padding="10px">
+            <Alert status="error" borderRadius="md">
+              <AlertIcon />
+              Something went wrong ! {props.profiledata.err || props.userurls.err}
+            </Alert>
+          </Box>
+          :
             (props.profiledata.isloading || props.userurls.isloading) ?
             <Box display="flex" width="full" alignContent="center" justifyContent="center" padding="10">
                 <Box>
