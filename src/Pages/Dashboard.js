@@ -11,7 +11,7 @@ import { ModalBody,Modal,ModalOverlay,ModalContent,ModalHeader,ModalCloseButton,
 import {Stat,StatLabel,StatNumber,StatHelpText,Stack,Code,Alert,AlertIcon,CircularProgress,CircularProgressLabel} from "@chakra-ui/react"
 import { MdLanguage } from "react-icons/md"
 import { AddIcon,ArrowRightIcon } from '@chakra-ui/icons'
-import { IconButton } from "@chakra-ui/react"
+import { IconButton,Image } from "@chakra-ui/react"
 import { Formik } from 'formik';
 import Formerror from '../Components/Formerror'
 
@@ -125,7 +125,7 @@ function Dashboard(props) {
                                 }}
                                 />
                               </Box>
-                              <Button size="sm" colorScheme="red" mt="2px" 
+                              <Button size="sm" colorScheme="red" mt="12px" 
                               onClick={(e)=>{
                                 e.stopPropagation()
                                 props.postremoveurl({id:d._id},toast)
@@ -287,16 +287,16 @@ function Dashboard(props) {
 
                         <DrawerBody>
                           <Divider/>
-                          <Box bg="blue.500" borderRadius="md" boxShadow="lg" padding="10" mt="1.5">
-                            <Stack direction="row" h={{base:"150px",sm:"110px"}} color="white" p={4}>
-                              <Divider orientation="vertical" borderLeftWidth="thick"/>
-                              <Stat>
-                                <StatLabel>Status : {selecteddata.up?'Up and running':'Server down'}</StatLabel>
-                                <StatNumber>Maximum Response Time : {selecteddata.maxResponseTime} ms</StatNumber>
-                                <StatHelpText>{selecteddata.url}</StatHelpText>
-                              </Stat>
-                            </Stack>
-                          </Box>
+                          {
+                            (selecteddata.meta && selecteddata.meta.title) &&
+                            <Box bg="blue.500" borderRadius="md" boxShadow="lg" padding="10" mt="1.5" color="white">
+                                  <Image src={selecteddata.meta.icon}></Image>
+                                <Stat>
+                                  <StatNumber>{selecteddata.meta.title}</StatNumber>
+                                  <StatLabel>{selecteddata.meta.description}</StatLabel>
+                                </Stat>
+                            </Box>
+                          }
                           <Box mt="30px">
                             <Text fontSize="3xl" fontWeight="bold">PERFORMANCE DATA</Text>
                             <Divider mb="20px"/>
