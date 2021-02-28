@@ -20,7 +20,7 @@ function WithSubnavigation(props) {
   const { isOpen, onToggle } = useDisclosure();
 
   return (
-    <Box position="fixed" width="full" top="0">
+    <Box position="fixed" width="full" top="0" zIndex={2}>
       <Flex
         bg={useColorModeValue('white', 'gray.700')} color={useColorModeValue('gray.600', 'white')}
         minH={'60px'} py={{ base: 2 }} px={{ base: 4 }}borderBottom={1} borderStyle={'solid'} 

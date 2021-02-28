@@ -8,7 +8,7 @@ import { Skeleton, SkeletonCircle, SkeletonText,Heading,Divider ,Button,Text,use
 import { Icon,useDisclosure } from "@chakra-ui/react"
 import { ModalBody,Modal,ModalOverlay,ModalContent,ModalHeader,ModalCloseButton,FormControl,FormLabel,Input,
   ModalFooter,Drawer,DrawerOverlay,DrawerBody,DrawerCloseButton,DrawerContent,DrawerHeader,DrawerFooter } from "@chakra-ui/react"
-import {Stat,StatLabel,StatNumber,StatHelpText,Stack,Code,Alert,AlertIcon} from "@chakra-ui/react"
+import {Stat,StatLabel,StatNumber,StatHelpText,Stack,Code,Alert,AlertIcon,CircularProgress,CircularProgressLabel} from "@chakra-ui/react"
 import { MdLanguage } from "react-icons/md"
 import { AddIcon } from '@chakra-ui/icons'
 import { Formik } from 'formik';
@@ -93,6 +93,29 @@ function Dashboard(props) {
                               <Text fontSize={'sm'} textAlign="center" fontWeight="bold" mt="10px">
                               {d.maxResponseTime} ms
                               </Text>
+
+                              {d.score?
+                              <Text textAlign="center" mt="30px">Performance</Text>:
+                              <Text textAlign="center" mt="30px">Performance (No data !)</Text>
+                              }
+                              <Box width="full" display="flex" justifyContent="center" alignContent="center" mt="5px">
+                                {d.score
+                                ?
+                                <CircularProgress 
+                                value={d.score.Performance * 100}
+                                size="120px" color="green.400">
+                                  <CircularProgressLabel>{d.score.Performance * 100}%</CircularProgressLabel>
+                                </CircularProgress>
+                                :
+                                <CircularProgress 
+                                value={0}
+                                size="120px" color="green.400">
+                                  <CircularProgressLabel>0%</CircularProgressLabel>
+                                </CircularProgress>
+                                }
+
+                              </Box>
+
                               <Button size="sm" colorScheme="red" mt="2px" 
                               onClick={(e)=>{
                                 e.stopPropagation()
