@@ -311,7 +311,12 @@ function Dashboard(props) {
                                       {v
                                       ?
                                       <Box>
-                                      <Text textAlign="center" mb="20px" fontWeight="bold">{k}</Text>
+                                        {
+                                          k==='Progressive_Web_App'?
+                                          <Text textAlign="center" mb="20px" fontWeight="bold">PWA</Text>
+                                          :
+                                          <Text textAlign="center" mb="20px" fontWeight="bold">{k}</Text>
+                                        }
                                       <CircularProgress 
                                       value={v * 100}
                                       size="120px" color="green.400">
@@ -320,7 +325,12 @@ function Dashboard(props) {
                                       </Box>
                                       :
                                       <Box>
-                                      <Text textAlign="center" mb="20px" fontWeight="bold">{k} (Node data !)</Text>
+                                        {
+                                          k==='Progressive_Web_App'?
+                                          <Text textAlign="center" mb="20px" fontWeight="bold">PWA (Node data !)</Text>
+                                          :
+                                          <Text textAlign="center" mb="20px" fontWeight="bold">{k} (Node data !)</Text>
+                                        }
                                       <CircularProgress 
                                       value={0}
                                       size="120px" color="green.400">
