@@ -10,7 +10,8 @@ import { ModalBody,Modal,ModalOverlay,ModalContent,ModalHeader,ModalCloseButton,
   ModalFooter,Drawer,DrawerOverlay,DrawerBody,DrawerCloseButton,DrawerContent,DrawerHeader,DrawerFooter } from "@chakra-ui/react"
 import {Stat,StatLabel,StatNumber,StatHelpText,Stack,Code,Alert,AlertIcon,CircularProgress,CircularProgressLabel} from "@chakra-ui/react"
 import { MdLanguage } from "react-icons/md"
-import { AddIcon } from '@chakra-ui/icons'
+import { AddIcon,ArrowRightIcon } from '@chakra-ui/icons'
+import { IconButton } from "@chakra-ui/react"
 import { Formik } from 'formik';
 import Formerror from '../Components/Formerror'
 
@@ -34,6 +35,7 @@ function Dashboard(props) {
     let [selecteddata,setselecteddata]=useState(null)
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { isOpen:drawerisOpen, onOpen:draweronOpen, onClose:draweronClose } = useDisclosure()
+  const { isOpen:drawerisOpenLH, onOpen:draweronOpenLH, onClose:draweronCloseLH } = useDisclosure()
 
     useEffect(() => {
         (()=>{
@@ -102,9 +104,9 @@ function Dashboard(props) {
                                 {d.score
                                 ?
                                 <CircularProgress 
-                                value={d.score.Performance * 100}
+                                value={(d.score.Performance * 100).toFixed(0)}
                                 size="120px" color="green.400">
-                                  <CircularProgressLabel>{d.score.Performance * 100}%</CircularProgressLabel>
+                                  <CircularProgressLabel>{(d.score.Performance * 100).toFixed(0)}%</CircularProgressLabel>
                                 </CircularProgress>
                                 :
                                 <CircularProgress 
@@ -113,9 +115,16 @@ function Dashboard(props) {
                                   <CircularProgressLabel>0%</CircularProgressLabel>
                                 </CircularProgress>
                                 }
-
                               </Box>
-
+                              <Box width="full" display="flex" justifyContent="center" alignContent="center" mt="5px">
+                                <IconButton aria-label="Search database" icon={<ArrowRightIcon />} colorScheme="green"
+                                onClick={(e)=>{
+                                  setselecteddata(d)
+                                  e.stopPropagation()
+                                  draweronOpenLH()
+                                }}
+                                />
+                              </Box>
                               <Button size="sm" colorScheme="red" mt="2px" 
                               onClick={(e)=>{
                                 e.stopPropagation()
@@ -257,6 +266,85 @@ function Dashboard(props) {
                             Back
                           </Button>
                           {/* <Button color="blue">Save</Button> */}
+                        </DrawerFooter>
+                      </DrawerContent>
+                    }
+                    </DrawerOverlay>
+                  </Drawer>
+
+                  <Drawer
+                    isOpen={drawerisOpenLH}
+                    placement="right"
+                    onClose={draweronCloseLH}
+                    size="full"
+                  >
+                    <DrawerOverlay>
+                    {
+                      selecteddata &&
+                      <DrawerContent>
+                        <DrawerCloseButton />
+                        <DrawerHeader>{selecteddata.name}</DrawerHeader>
+
+                        <DrawerBody>
+                          <Divider/>
+                          <Box bg="blue.500" borderRadius="md" boxShadow="lg" padding="10" mt="1.5">
+                            <Stack direction="row" h={{base:"150px",sm:"110px"}} color="white" p={4}>
+                              <Divider orientation="vertical" borderLeftWidth="thick"/>
+                              <Stat>
+                                <StatLabel>Status : {selecteddata.up?'Up and running':'Server down'}</StatLabel>
+                                <StatNumber>Maximum Response Time : {selecteddata.maxResponseTime} ms</StatNumber>
+                                <StatHelpText>{selecteddata.url}</StatHelpText>
+                              </Stat>
+                            </Stack>
+                          </Box>
+                          <Box mt="30px">
+                            <Text fontSize="3xl" fontWeight="bold">PERFORMANCE DATA</Text>
+                            <Divider mb="20px"/>
+                            <Box padding="15px" boxShadow="inner" bg={colormode} borderRadius="sm">
+                            <Grid templateColumns={{sm:"repeat(1, 1fr)",lg:"repeat(3, 1fr)"}} gap={6}>
+                              {
+                              selecteddata.score?
+                              Object.entries(selecteddata.score).map(([k,v])=>(
+                                <Box
+                                key={k} borderRadius="md" w="full" bg="blue.500" _hover={{bg:"blue.400",color:"whiteAlpha.900"}} 
+                                padding="10px" boxShadow="lg" cursor="pointer" color="whiteAlpha.800" display="flex" justifyContent="center" alignContent="center"> 
+                                      {v
+                                      ?
+                                      <Box>
+                                      <Text textAlign="center" mb="20px" fontWeight="bold">{k}</Text>
+                                      <CircularProgress 
+                                      value={v * 100}
+                                      size="120px" color="green.400">
+                                        <CircularProgressLabel>{(v * 100).toFixed(0)}%</CircularProgressLabel>
+                                      </CircularProgress>
+                                      </Box>
+                                      :
+                                      <Box>
+                                      <Text textAlign="center" mb="20px" fontWeight="bold">{k} (Node data !)</Text>
+                                      <CircularProgress 
+                                      value={0}
+                                      size="120px" color="green.400">
+                                        <CircularProgressLabel>0%</CircularProgressLabel>
+                                      </CircularProgress>
+                                      </Box>
+                                      }
+                                </Box>
+                              ))
+                              :<Text fontWeight="bold" textTransform="uppercase">No data !</Text>
+                              }  
+                              <Button colorScheme="whatsapp" target="blank"
+                              as="a" href="https://web.dev/vitals/?gclid=Cj0KCQiA-OeBBhDiARIsADyBcE5uGYrSXy5SJGTexGnxhGgHKLYt4sLRf_H6ujaKhoF5r8321DW1gGcaAm2oEALw_wcB">
+                                For More Info See Here
+                              </Button>
+                            </Grid>
+                            </Box>
+                          </Box>
+                        </DrawerBody>
+
+                        <DrawerFooter>
+                          <Button variant="outline" mr={3} onClick={draweronCloseLH}>
+                            Back
+                          </Button>
                         </DrawerFooter>
                       </DrawerContent>
                     }
