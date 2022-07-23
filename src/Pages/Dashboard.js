@@ -290,7 +290,7 @@ function Dashboard(props) {
                           {
                             (selecteddata.meta && selecteddata.meta.title) &&
                             <Box bg="blue.500" borderRadius="md" boxShadow="lg" padding="10" mt="1.5" color="white">
-                                  <Image src={selecteddata.meta.icon}></Image>
+                                  <Image src={selecteddata.meta.icon} style={{height:32}}></Image>
                                 <Stat>
                                   <StatNumber>{selecteddata.meta.title}</StatNumber>
                                   <StatLabel>{selecteddata.meta.description}</StatLabel>
